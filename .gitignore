@@ -1,0 +1,49 @@
+# macOS system files
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.env/
+ENV/
+env/
+.venv/
+**/.env
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# IDEs and editors
+.vscode/             # VS Code
+.idea/               # PyCharm
+
+# Test and coverage
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+
+# Packaging and distribution
+build/
+dist/
+*.egg-info/
+*.egg
+*.spec
+
+# PyInstaller
+*.spec
+
+# OS-generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
