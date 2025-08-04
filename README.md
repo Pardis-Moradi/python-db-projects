@@ -72,11 +72,94 @@ Increases the episode count for a specific anime (defaults to +1 if no value pro
 ## 📌 Project 2: Research Papers Manager
 
 **Assignment Title:** implementing API using MongoDB & Redis  
-**Status:** _Coming soon_  
-**Stack:** Python + MongoDB + Redis  
-**Focus:** API design, document DB modeling, caching, and performance optimization
+**Language & Stack:** Python + Flask + MongoDB + Redis  
+**Focus:** NoSQL schema design, RESTful API implementation, caching, and real-time metrics
 
-> Detailed project description and implementation to be added soon.
+### 🧾 Description
+
+This project implements a full-featured API system for managing university research papers. It uses MongoDB for persistent storage of user profiles, paper metadata, and citation relationships, and Redis for caching search results, tracking real-time view counts, and validating usernames during registration.
+
+The system supports user registration and login, paper upload with metadata and citations, full-text search with relevance sorting, and real-time metrics for paper views. A background job periodically syncs Redis view counters back to MongoDB.
+
+### 🗃️ Database Design
+
+- **MongoDB Collections:**
+  - `users`: stores user profiles with hashed passwords
+  - `papers`: stores paper metadata and uploader reference
+  - `citations`: stores citation relationships between papers
+
+- **Redis Structures:**
+  - `usernames` (hash): tracks taken usernames for instant validation
+  - `search:<term>:<sort>:<order>` (string): caches search results for 5 minutes
+  - `paper_views:<paper_id>` (string): tracks real-time view counts
+
+### 📡 API Endpoints
+
+#### `POST /signup`
+Registers a new user with a unique username.  
+Validates username availability via Redis.
+
+#### `POST /login`
+Authenticates a user and returns their user ID.
+
+#### `POST /papers`
+Uploads a new paper with metadata and optional citations.  
+Requires `X-User-ID` header for authentication.
+
+#### `GET /papers`
+Searches papers by keyword, with optional sorting by relevance or publication date.  
+Caches results in Redis for 5 minutes.
+
+#### `GET /papers/<paper_id>`
+Returns full paper details, citation count, and real-time view count.  
+Increments view count in Redis.
+
+### 🔁 Background Task
+
+A scheduled job runs every 10 minutes using APScheduler to:
+
+- Scan Redis for `paper_views:*` keys
+- Sync view counts to MongoDB using `$inc`
+- Reset Redis counters to zero
+
+### 🧪 Sample Paper Document
+
+```json
+{
+  "_id": "688f7ca99f9214ea0e99ff70",
+  "title": "Government together between special eat daughter energy.",
+  "authors": ["Timothy Gardner", "Robert Robertson", "Natalie Phillips"],
+  "abstract": "Surface customer think...",
+  "publication_date": "2024-08-29",
+  "journal_conference": "Levine, Hernandez and Taylor",
+  "keywords": ["them", "point", "different"],
+  "uploaded_by": "688f7ca99f9214ea0e99ff25",
+  "views": 0
+}
+```
+### 🛠️ Tools & Libraries
+
+- **Flask** – Lightweight web framework for building RESTful APIs
+- **PyMongo** – MongoDB driver for Python to interact with document-based data
+- **redis-py** – Redis client for caching and real-time metrics
+- **bcrypt** – Secure password hashing for user authentication
+- **Faker** – Used to generate realistic test data for papers and users
+- **APScheduler** – Scheduler for background tasks like syncing Redis counters
+
+### 📈 Features
+
+- ⚡ Real-time view tracking using Redis counters
+- 🧠 Cached search results for faster response times
+- 🔗 Citation graph modeling between papers
+- 🔄 Background sync of Redis metrics to MongoDB
+- 🔐 Minimal session-based authentication with hashed passwords
+
+### 🚧 Status
+
+- ✅ Core endpoints implemented and tested
+- ✅ Redis caching and view tracking integrated
+- ✅ Background sync job operational
+- 🧪 Final testing and performance tuning in progress
 
 ---
 
