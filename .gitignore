@@ -22,8 +22,8 @@ env/
 *.tmp
 
 # IDEs and editors
-.vscode/             # VS Code
-.idea/               # PyCharm
+**/.vscode/             # VS Code
+**/.idea/               # PyCharm
 
 # Test and coverage
 .coverage
